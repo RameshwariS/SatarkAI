@@ -1,0 +1,145 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Nivesh Kavach - checks investment offers, trading groups and trading apps for
+  scam signs and helps victims act in the first hour. Campus to Cloud Hackathon.
+
+Parameters:
+  BedrockModelId:
+    Type: String
+    Default: amazon.nova-lite-v1:0
+    Description: Bedrock model or inference profile ID (must support images via the Converse API).
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    MemorySize: 512
+    Timeout: 28
+
+Resources:
+  # ---------- Data: anonymous counts only (no message text, no images) ----------
+  ChecksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - {AttributeName: pk, AttributeType: S}
+        - {AttributeName: sk, AttributeType: S}
+      KeySchema:
+        - {AttributeName: pk, KeyType: HASH}
+        - {AttributeName: sk, KeyType: RANGE}
+      TimeToLiveSpecification: {AttributeName: ttl, Enabled: true}
+
+  # ---------- API ----------
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins: ["*"]
+        AllowHeaders: ["content-type"]
+        AllowMethods: [GET, POST, OPTIONS]
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.handler
+      Environment:
+        Variables:
+          BEDROCK_MODEL_ID: !Ref BedrockModelId
+          CHECKS_TABLE: !Ref ChecksTable
+      Policies:
+        - DynamoDBCrudPolicy: {TableName: !Ref ChecksTable}
+        - Statement:
+            - Effect: Allow
+              Action: [bedrock:InvokeModel]   # also covers the Converse API
+              Resource: "*"
+            - Effect: Allow
+              Action: [textract:DetectDocumentText, translate:TranslateText, polly:SynthesizeSpeech]
+              Resource: "*"
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /api/{proxy+}
+            Method: ANY
+
+  # ---------- Website: private S3 bucket behind CloudFront ----------
+  WebBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  WebOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  Cdn:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: Nivesh Kavach
+        DefaultRootObject: index.html
+        PriceClass: PriceClass_200   # includes India edge locations
+        HttpVersion: http2and3
+        Origins:
+          - Id: web
+            DomainName: !GetAtt WebBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt WebOAC.Id
+            S3OriginConfig: {OriginAccessIdentity: ""}
+          - Id: api
+            DomainName: !Sub "${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+            CustomOriginConfig: {OriginProtocolPolicy: https-only}
+        DefaultCacheBehavior:
+          TargetOriginId: web
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6        # Managed-CachingOptimized
+        CacheBehaviors:
+          - PathPattern: /api/*
+            TargetOriginId: api
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad        # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac # Managed-AllViewerExceptHostHeader
+
+  WebBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal: {Service: cloudfront.amazonaws.com}
+            Action: s3:GetObject
+            Resource: !Sub "${WebBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Cdn}"
+
+Outputs:
+  WebsiteUrl:
+    Description: Live prototype URL (submit this)
+    Value: !Sub "https://${Cdn.DomainName}"
+  ApiUrl:
+    Description: Direct API URL (for testing)
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/api"
+  WebBucketName:
+    Value: !Ref WebBucket
+  DistributionId:
+    Value: !Ref Cdn

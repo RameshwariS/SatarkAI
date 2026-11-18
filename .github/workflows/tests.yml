@@ -1,0 +1,13 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install pytest cfn-lint
+      - run: cd backend && python -m pytest -q
+      - run: MOCK_AWS=1 python scripts/evaluate.py eval/labelled.csv
+      - run: cfn-lint backend/template.yaml

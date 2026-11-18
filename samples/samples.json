@@ -1,0 +1,42 @@
+{
+  "_note": "Made-up example messages written for testing, based on patterns described in public police and SEBI advisories. All names, numbers, UPI IDs and links are fictional.",
+  "samples": [
+    {
+      "id": "stock_group_hook",
+      "label": "Stock-tips group invite",
+      "expected_risk": "high",
+      "text": "Hello! Welcome to Motilal Oswal VIP Stock Learning Group 📈 Professor Rajesh Mehta gives FREE daily tips at 9:15 AM. Our members earned 18% profit last week. Guaranteed returns with zero risk! Limited seats, join today only. Reply YES to get your institutional trading account."
+    },
+    {
+      "id": "fake_app_deposit",
+      "label": "Asked to deposit on an app",
+      "expected_risk": "high",
+      "text": "Dear member, download our institutional trading app from this link: https://motilal-vip-trade.top/app.apk (not available on Play Store due to SEBI rules). First deposit minimum Rs 50,000. Pay to UPI ID shreeganesh.traders@ybl. We are SEBI registered INH000099999. IPO allotment 100% guaranteed for VIP members."
+    },
+    {
+      "id": "withdrawal_tax",
+      "label": "Withdrawal blocked, tax demanded",
+      "expected_risk": "high",
+      "text": "Your account profit is ₹14,85,000. To withdraw, you must first pay 20% income tax of ₹2,97,000 to clear the dues. Your account will be frozen within 24 hours if not paid. Don't tell anyone, this is confidential institutional channel. Pay to A/c No 50100234567891 IFSC HDFC0001234."
+    },
+    {
+      "id": "already_paid",
+      "label": "I already paid",
+      "mode": "paid",
+      "expected_risk": "high",
+      "text": "Paid ₹25,000 to shreeganesh.traders@ybl UTR 432198765432 on 12 Nov. Then paid ₹75,000 UTR 432198700011 on 14 Nov. Now app says pay withdrawal fee of ₹40,000 to unlock my profit. App name StockPro Institutional, link stockpro-inst.vip"
+    },
+    {
+      "id": "hindi_ponzi",
+      "label": "Hindi daily-return scheme",
+      "expected_risk": "high",
+      "text": "सिर्फ ₹5000 लगाओ और 3% रोज मुनाफा पाओ! पक्का मुनाफा, बिना रिस्क। 2 दोस्तों को जोड़ो और referral income पाओ। जल्दी करो, आज ही जुड़ो।"
+    },
+    {
+      "id": "genuine_sip",
+      "label": "Genuine SIP reminder",
+      "expected_risk": "low",
+      "text": "Your SIP of Rs 2,000 in XYZ Flexi Cap Fund will be debited on 5 Dec from your registered bank mandate. Track your folio on the official app. Mutual fund investments are subject to market risks, read all scheme related documents carefully."
+    }
+  ]
+}

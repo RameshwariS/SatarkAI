@@ -1,0 +1,68 @@
+{
+  "version": "2026-11-18",
+  "notes": "Scam patterns written from public police/SEBI advisories and news reports of Indian investment fraud. Each scam has ordered stages so the app can say where the user is and what comes next.",
+  "scams": [
+    {
+      "id": "stock_tips_group",
+      "name": "WhatsApp/Telegram stock-tips group with fake trading app",
+      "summary": "You are added to a 'VIP' stock-tips group run by a fake 'professor' or 'assistant' of a famous broker. After weeks of free tips and fake profit screenshots from other 'members', you are moved to a trading app or website that shows fake profits. When you try to withdraw, they ask for tax or fees.",
+      "stages": [
+        {"n": 1, "name": "Hook", "signs": "Ad on Instagram/Facebook/Telegram, or added to a group without asking. Free stock tips, 'learn trading' sessions.", "next": "They will share daily tips and screenshots of other members' profits to build trust."},
+        {"n": 2, "name": "Trust building", "signs": "Daily classes, a 'professor' or 'mentor', many members posting profit screenshots, small tips that seem to work.", "next": "They will ask you to open an account on 'their' platform or app, often called an institutional or VIP account."},
+        {"n": 3, "name": "Move to fake app", "signs": "App link that is not on Play Store/App Store, an APK file, or a website that looks like a real broker. 'Institutional account', 'OTC trades', 'block deals'.", "next": "They will ask for a first deposit to a UPI ID or bank account, and show quick profits in the app."},
+        {"n": 4, "name": "First deposit", "signs": "Money sent to a personal UPI ID or a company account that is not the broker's. App shows big profits. Sometimes a small withdrawal is allowed to win trust.", "next": "They will push you to invest much more: guaranteed IPO allotment, a 'loan' or 'credit' inside the app, limited-time offers."},
+        {"n": 5, "name": "Pressure to invest more", "signs": "IPO allotment 'guaranteed', in-app loan you must repay, threats that your account will be frozen, urgency.", "next": "When you try to withdraw, they will block it and demand tax, fees or 'unlock charges'."},
+        {"n": 6, "name": "Withdrawal blocked", "signs": "Asked to pay 'income tax', 'service fee', 'margin', 'unfreeze charges' before you can withdraw.", "next": "Every payment leads to a new fee. Then the group and app disappear."},
+        {"n": 7, "name": "Vanished", "signs": "Group deleted, numbers blocked, app not opening.", "next": "Report immediately. Do not pay 'recovery agents' who promise to get your money back; that is a second scam."}
+      ]
+    },
+    {
+      "id": "fake_ipo_institutional",
+      "name": "Fake IPO allotment / institutional account offer",
+      "summary": "You are promised guaranteed IPO allotment, 'institutional quota', 'OTC' or 'block deal' shares at a discount through a special account. Real IPO allotment is never guaranteed and is done only through your own broker or bank (ASBA).",
+      "stages": [
+        {"n": 1, "name": "Offer", "signs": "'Guaranteed IPO allotment', 'institutional quota', 'pre-IPO shares', 'OTC discount'.", "next": "They will ask you to open a special account or pay into a UPI/bank account."},
+        {"n": 2, "name": "Payment", "signs": "Paying to a personal UPI or an unrelated company account instead of applying via your own broker or bank.", "next": "The app will show allotment and big gains, then ask you to pay more to 'subscribe' or 'clear dues'."},
+        {"n": 3, "name": "Dues and withdrawal fees", "signs": "Told you owe money for extra allotted shares, or must pay tax to withdraw.", "next": "Each payment leads to another demand, then contact stops."}
+      ]
+    },
+    {
+      "id": "task_job_scam",
+      "name": "Part-time 'task' job that turns into investment",
+      "summary": "You are offered easy money for liking videos or writing reviews. After small payouts, you are asked to 'prepay' for higher tasks or invest to unlock earnings.",
+      "stages": [
+        {"n": 1, "name": "Easy task", "signs": "Like YouTube videos, rate hotels, earn ₹50–₹200 per task.", "next": "They will pay you a small amount to win trust, then move you to a Telegram group."},
+        {"n": 2, "name": "Prepaid tasks", "signs": "'Merchant tasks' or 'VIP tasks' where you must pay first to earn a bigger return.", "next": "Your balance will show profit but be 'locked' until you complete more paid tasks."},
+        {"n": 3, "name": "Locked balance", "signs": "Told you made a mistake and must pay to recover, or pay to withdraw.", "next": "Each payment is followed by a bigger one. Stop paying now."}
+      ]
+    },
+    {
+      "id": "crypto_forex",
+      "name": "Crypto / forex / USDT trading platform",
+      "summary": "A 'mentor' or online friend introduces a crypto, forex or USDT platform (often MT4/MT5 based) with daily returns. Many such forex platforms are not authorised in India, and the RBI keeps a public alert list of unauthorised forex platforms.",
+      "stages": [
+        {"n": 1, "name": "Introduction", "signs": "Online friend, dating match or mentor talks about crypto or forex profits.", "next": "They will guide you to a website or app and ask you to buy USDT or deposit."},
+        {"n": 2, "name": "Deposit and fake gains", "signs": "Deposits via UPI/P2P to individuals; dashboard shows fast gains.", "next": "They will push bigger deposits for 'VIP level' or special signals."},
+        {"n": 3, "name": "Withdrawal blocked", "signs": "Asked to pay tax, 'anti-money-laundering' fee or account upgrade to withdraw.", "next": "The platform disappears after collecting fees."}
+      ]
+    },
+    {
+      "id": "ponzi_app",
+      "name": "Ponzi / 'daily return' app with referral income",
+      "summary": "An app or scheme promises fixed daily or monthly returns and extra income for adding friends. Early members are paid using new members' money until it collapses.",
+      "stages": [
+        {"n": 1, "name": "Join", "signs": "Fixed daily/monthly return, 'plans' of ₹5,000/₹10,000, team or level income.", "next": "Small returns will be paid at first to make you invest more and bring friends."},
+        {"n": 2, "name": "Grow the team", "signs": "Pressure to recruit, bonuses for referrals, bigger plans.", "next": "Withdrawals will slow down with excuses like server upgrade or tax."},
+        {"n": 3, "name": "Collapse", "signs": "Withdrawals stopped, app closed.", "next": "Report with transaction details; collect details from others who lost money."}
+      ]
+    }
+  ],
+  "first_hour_steps": [
+    "Call 1930 (National Cyber Crime Helpline) immediately. Reporting fast gives the best chance of the money being frozen before it is moved.",
+    "File a complaint at cybercrime.gov.in with every transaction ID (UTR), amount, date-time, and the UPI ID or bank account you paid to.",
+    "Call your bank's customer care, report the transactions as fraud, and ask them to raise a dispute.",
+    "Do not pay any more 'tax', 'fees' or 'unlock charges'. They are part of the scam.",
+    "Keep screenshots of chats, the group, the app and all payments. Do not delete the chats.",
+    "Ignore anyone offering to recover your money for a fee. That is a second scam."
+  ]
+}

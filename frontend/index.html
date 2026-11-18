@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nivesh Kavach · Check before you invest</title>
+  <meta name="description" content="Paste a message or screenshot from an investment group or trading app. Nivesh Kavach tells you if it looks like a scam, what happens next, and what to do.">
+  <meta name="theme-color" content="#12304a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 4 8 12v18c0 15 10 26 24 30 14-4 24-15 24-30V12z' fill='%2312304a'/><path d='M22 33l7 7 14-15' stroke='%23f2a541' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-row">
+      <div class="brand">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4 8 12v18c0 15 10 26 24 30 14-4 24-15 24-30V12z" fill="currentColor"/><path d="M22 33l7 7 14-15" stroke="#f2a541" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <strong data-i18n="brand">Nivesh Kavach</strong>
+          <span data-i18n="tagline">Check before you invest</span>
+        </div>
+      </div>
+      <label class="lang">
+        <span class="sr" data-i18n="language">Language</span>
+        <select id="lang" aria-label="Language">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="mr">मराठी</option>
+          <option value="gu">ગુજરાતી</option>
+          <option value="ta">தமிழ்</option>
+          <option value="te">తెలుగు</option>
+          <option value="kn">ಕನ್ನಡ</option>
+          <option value="bn">বাংলা</option>
+          <option value="ml">മലയാളം</option>
+          <option value="pa">ਪੰਜਾਬੀ</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 data-i18n="heroTitle">Got a "sure-profit" stock tip or trading app?</h1>
+      <p data-i18n="heroSub">Paste the message or add screenshots from the WhatsApp/Telegram group or app. We'll tell you if it looks like a scam, what they'll do next, and what you should do now.</p>
+    </section>
+
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title" class="sr">Check a message</h2>
+      <div class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-mode="check" aria-selected="true" data-i18n="tabCheck">Check before paying</button>
+        <button role="tab" class="tab" data-mode="paid" aria-selected="false" data-i18n="tabPaid">I already paid</button>
+      </div>
+      <p class="mode-hint" id="modeHint" data-i18n="hintCheck">Share what they sent you: the group invite, the app link, the payment request.</p>
+
+      <label for="text" class="lbl" data-i18n="pasteLabel">Paste the message</label>
+      <textarea id="text" rows="6" placeholder="e.g. Welcome to VIP Stock Learning Group… guaranteed 5% daily returns… pay to …@ybl"></textarea>
+
+      <div class="row">
+        <label class="upload">
+          <input type="file" id="files" accept="image/*" multiple>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h3l2-2h6l2 2h3v14H4z M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <span data-i18n="addShots">Add screenshots (up to 3)</span>
+        </label>
+        <input id="city" class="city" type="text" maxlength="40" placeholder="City (optional)" data-i18n-ph="cityPh">
+      </div>
+      <div id="thumbs" class="thumbs"></div>
+
+      <div class="examples">
+        <span data-i18n="tryExample">Try an example:</span>
+        <div id="exampleChips" class="chips"></div>
+      </div>
+
+      <button id="checkBtn" class="primary" data-i18n="checkBtn">Check now</button>
+      <p class="privacy" data-i18n="privacy">We don't save your messages or screenshots.</p>
+    </section>
+
+    <section id="loading" class="card loading" hidden aria-live="polite">
+      <div class="spinner"></div><p id="loadingMsg">Reading your screenshots…</p>
+    </section>
+
+    <section id="error" class="card error" hidden role="alert"></section>
+
+    <section id="result" hidden aria-live="polite">
+      <div class="card verdict" id="verdict">
+        <div class="badge" id="riskBadge"></div>
+        <p class="summary" id="summary"></p>
+        <button class="ghost" id="listenBtn" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9zM16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span data-i18n="listen">Listen</span>
+        </button>
+        <a class="ghost wa" id="shareBtn" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a5 5 0 0 1-2.3-2.3l.8-1-1-2z" fill="currentColor"/></svg>
+          <span data-i18n="shareFamily">Send to family on WhatsApp</span>
+        </a>
+        <audio id="audio" hidden></audio>
+      </div>
+
+      <div class="card" id="stageCard" hidden>
+        <h3 data-i18n="whereYouAre">Where you are in this scam</h3>
+        <p class="muted" id="scamName"></p>
+        <ol class="stages" id="stages"></ol>
+        <div class="next">
+          <strong data-i18n="nextMove">What they'll most likely do next</strong>
+          <p id="nextMove"></p>
+        </div>
+      </div>
+
+      <div class="card" id="paidCard" hidden>
+        <h3 data-i18n="firstHour">Do this now: the first hour matters</h3>
+        <a class="call" href="tel:1930">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h3l2 5-2 1.5a12 12 0 0 0 5.5 5.5L16 13l5 2v3a2 2 0 0 1-2 2A17 17 0 0 1 4 5a2 2 0 0 1 2-2z" fill="currentColor"/></svg>
+          <span data-i18n="call1930">Call 1930 (Cyber Crime Helpline)</span>
+        </a>
+      </div>
+
+      <div class="card">
+        <h3 data-i18n="whatToDo">What you should do</h3>
+        <ol class="actions" id="actions"></ol>
+      </div>
+
+      <div class="card" id="flagsCard" hidden>
+        <h3 data-i18n="redFlags">Red flags we found</h3>
+        <ul class="flags" id="flags"></ul>
+      </div>
+
+      <div class="card" id="checksCard" hidden>
+        <h3 data-i18n="checks">Details we checked</h3>
+        <div id="checks"></div>
+      </div>
+
+      <div class="card" id="complaintCard" hidden>
+        <h3 data-i18n="complaint">Your complaint draft</h3>
+        <p class="muted" data-i18n="complaintHint">We filled in what we found in your screenshots. Fill the [blanks], then submit it on cybercrime.gov.in.</p>
+        <textarea id="complaint" rows="14"></textarea>
+        <div class="row">
+          <button class="ghost" id="copyBtn" data-i18n="copy">Copy</button>
+          <a class="ghost" href="https://cybercrime.gov.in" target="_blank" rel="noopener" data-i18n="openPortal">Open cybercrime.gov.in</a>
+        </div>
+      </div>
+
+      <p class="disclaimer" id="disclaimer"></p>
+      <p class="notes" id="notes"></p>
+      <button class="ghost again" id="againBtn" data-i18n="again">Check another message</button>
+    </section>
+
+    <section class="card trends" id="trends" hidden>
+      <h3 data-i18n="trendsTitle">Scams people checked this week</h3>
+      <div id="trendBars"></div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p data-i18n="footer">Guidance, not a guarantee. Verify on sebi.gov.in. Report fraud at 1930 or cybercrime.gov.in.</p>
+    <p class="muted">Built on AWS for the Campus to Cloud Hackathon.</p>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
