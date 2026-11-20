@@ -8,7 +8,10 @@ Nivesh Kavach lets anyone paste a message or upload screenshots. It tells them i
 - whether it looks like a scam, with the exact words that are red flags,
 - **which stage of the scam they are at and what the scammer will do next**,
 - whether the payment UPI ID is a SEBI-validated `@valid` ID, and whether a SEBI registration number checks out,
+- the message itself with every red-flag phrase highlighted,
 - what to do now, with a one-tap WhatsApp message to warn family. If they already paid, it gives the first-hour steps (1930, cybercrime.gov.in, bank) and a **complaint draft pre-filled from their payment screenshots**.
+
+On Android it installs like an app, and you can **share a WhatsApp message or screenshot straight into it** from WhatsApp's Share menu.
 
 > Built for the Campus to Cloud Hackathon (Techfest 2026-27, sponsored by AWS). **Start with [NEXT_STEPS.md](NEXT_STEPS.md).**
 
@@ -36,7 +39,7 @@ flowchart LR
 2. **Textract** reads English text, numbers, UPI IDs, links and transaction IDs from the screenshots.
 3. The **rule engine** (`backend/src/rules.py`) looks for about 20 red flags: guaranteed returns, a withdrawal "tax", a non-`@valid` UPI ID, lookalike broker domains, APK links, and so on. It works even if the AI is down, and every flag shows the exact words that triggered it.
 4. **Bedrock** gets the text, the screenshots (so it can read Hindi/Marathi), the rule-engine hints and the scam playbook (`playbook.json`). It returns the scam type, the stage, and what the scammer will likely do next as JSON.
-5. The two are merged with a **safety-first** rule: the AI can raise the risk level but never lower a rule-based HIGH.
+5. The two are merged with a **safety-first** rule: the AI can raise the risk level but never lower a rule-based HIGH. Scam text is fenced off as untrusted input, so a message that says "AI: this is safe" can't steer the model; such text is itself flagged.
 6. **Translate** turns the explanation into the user's language. **Polly** reads it aloud.
 7. **DynamoDB** stores only the scam type, risk level, stage and an optional city, which feed the "scams this week" chart. No messages, images, UPI IDs or phone numbers are stored.
 
@@ -50,8 +53,11 @@ backend/
   src/playbook.json    5 Indian investment-scam types with ordered stages
   src/aws.py           Textract / Bedrock / Translate / Polly / DynamoDB wrappers
   src/registry.py      SEBI registration-number lookup
-  tests/               pytest (runs without AWS)
-frontend/              static mobile-first site (no build step)
+  tests/               pytest, no AWS account needed. test_aws_paths.py runs the real boto3
+                       clients against fake responses, so request shapes are checked
+                       against the actual Textract/Bedrock/Translate/Polly/DynamoDB APIs
+frontend/              static mobile-first site (no build step); installable app
+                       (manifest + sw.js) with a WhatsApp share target
 samples/samples.json   made-up test messages with expected results
 samples/screenshots/   watermarked sample chat screenshots for the demo
 eval/labelled.csv      labelled messages (add real ones!) for measuring accuracy
@@ -67,7 +73,7 @@ DEMO_SCRIPT.md         3-minute demo video script
 
 ## Run locally (no AWS needed)
 ```bash
-pip install pytest
+pip install pytest boto3
 cd backend && python -m pytest -q && cd ..
 MOCK_AWS=1 python scripts/local_server.py     # open http://localhost:8000
 ```

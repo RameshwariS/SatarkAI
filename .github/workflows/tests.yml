@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - run: pip install pytest cfn-lint
+      - run: pip install pytest cfn-lint boto3
       - run: cd backend && python -m pytest -q
       - run: MOCK_AWS=1 python scripts/evaluate.py eval/labelled.csv
       - run: cfn-lint backend/template.yaml

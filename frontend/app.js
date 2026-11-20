@@ -160,6 +160,9 @@
       ${f.evidence ? `<q>${esc(f.evidence)}</q>` : ""}
       ${f.source === "ai" ? `<span class="tag">AI</span>` : ""}</li>`).join("");
 
+    // the message itself, with each red flag's exact words marked
+    renderRead(d);
+
     // concrete checks
     const e = d.entities || {};
     const parts = [];
@@ -185,6 +188,37 @@
     $("notes").textContent = (d.notes || []).join(" ");
     $("result").hidden = false;
     $("verdict").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function renderRead(d) {
+    const text = d.read_text || "";
+    const spans = [];
+    const lower = text.toLowerCase();
+    d.flags.forEach((f) => {
+      const m = (f.match || "").trim();
+      if (m.length < 2) return;
+      let i = lower.indexOf(m.toLowerCase());
+      while (i !== -1) {
+        spans.push([i, i + m.length, f.title_t || f.title]);
+        i = lower.indexOf(m.toLowerCase(), i + m.length);
+      }
+    });
+    if (!text.trim() || !spans.length) { $("readCard").hidden = true; return; }
+    spans.sort((a, b) => a[0] - b[0] || b[1] - a[1]);
+    const merged = [];
+    spans.forEach((s) => {
+      const last = merged[merged.length - 1];
+      if (last && s[0] < last[1]) { last[1] = Math.max(last[1], s[1]); if (!last[2].includes(s[2])) last[2] += " · " + s[2]; }
+      else merged.push([...s]);
+    });
+    let html = "", pos = 0;
+    merged.forEach(([a, b, title]) => {
+      html += esc(text.slice(pos, a)) + `<mark title="${esc(title)}">${esc(text.slice(a, b))}</mark>`;
+      pos = b;
+    });
+    html += esc(text.slice(pos));
+    $("readText").innerHTML = html.replace(/\n/g, "<br>");
+    $("readCard").hidden = false;
   }
 
   // ---------- family alert: WhatsApp share (no SMS, so no DLT registration needed) ----------
@@ -232,6 +266,43 @@
     } catch (_) { /* trends are optional */ }
   }
 
+  // ---------- installable app + "share to Nivesh Kavach" from WhatsApp ----------
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  }
+  let installPrompt = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault(); installPrompt = e; $("installBox").hidden = false;
+  });
+  $("installBtn").addEventListener("click", async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    await installPrompt.userChoice.catch(() => {});
+    installPrompt = null; $("installBox").hidden = true;
+  });
+  window.addEventListener("appinstalled", () => { $("installBox").hidden = true; });
+
+  async function loadShared() {
+    if (!new URLSearchParams(location.search).has("shared") || !("caches" in window)) return;
+    try {
+      const cache = await caches.open("nk-share");
+      const res = await cache.match("/shared-data");
+      if (!res) return;
+      const d = await res.json();
+      await cache.delete("/shared-data");
+      if (d.text) $("text").value = d.text;
+      for (const im of (d.images || []).slice(0, 3)) {
+        const blob = await (await fetch(im.data)).blob();
+        state.images.push(await compress(blob));
+      }
+      renderThumbs();
+      $("sharedNote").hidden = false;
+      history.replaceState(null, "", "/");
+      if (d.text || (d.images || []).length) check();
+    } catch (_) { /* ignore, user can paste instead */ }
+  }
+
   applyI18n();
   loadTrends();
+  loadShared();
 })();

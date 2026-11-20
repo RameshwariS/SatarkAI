@@ -7,6 +7,8 @@
   <meta name="description" content="Paste a message or screenshot from an investment group or trading app. Nivesh Kavach tells you if it looks like a scam, what happens next, and what to do.">
   <meta name="theme-color" content="#12304a">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 4 8 12v18c0 15 10 26 24 30 14-4 24-15 24-30V12z' fill='%2312304a'/><path d='M22 33l7 7 14-15' stroke='%23f2a541' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -69,6 +71,7 @@
         <div id="exampleChips" class="chips"></div>
       </div>
 
+      <p class="shared-note" id="sharedNote" hidden data-i18n="sharedNote">Got it from WhatsApp. Checking now…</p>
       <button id="checkBtn" class="primary" data-i18n="checkBtn">Check now</button>
       <p class="privacy" data-i18n="privacy">We don't save your messages or screenshots.</p>
     </section>
@@ -122,6 +125,11 @@
         <ul class="flags" id="flags"></ul>
       </div>
 
+      <div class="card" id="readCard" hidden>
+        <h3 data-i18n="whatWeRead">The message, with red flags marked</h3>
+        <div class="readtext" id="readText"></div>
+      </div>
+
       <div class="card" id="checksCard" hidden>
         <h3 data-i18n="checks">Details we checked</h3>
         <div id="checks"></div>
@@ -147,6 +155,16 @@
       <div id="trendBars"></div>
     </section>
   </main>
+
+  <section class="wrap install" id="installBox" hidden>
+    <div class="card install-card">
+      <div>
+        <strong data-i18n="installTitle">Add Nivesh Kavach to your phone</strong>
+        <p class="muted" data-i18n="installSub">Then share any WhatsApp message or screenshot straight to it.</p>
+      </div>
+      <button class="ghost" id="installBtn" data-i18n="installBtn">Install</button>
+    </div>
+  </section>
 
   <footer class="wrap foot">
     <p data-i18n="footer">Guidance, not a guarantee. Verify on sebi.gov.in. Report fraud at 1930 or cybercrime.gov.in.</p>

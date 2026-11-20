@@ -129,3 +129,9 @@ code { background: #f1efe9; border-radius: 4px; padding: 1px 5px; font-size: .88
 @media (min-width: 640px) { .hero h1 { font-size: 1.9rem; } }
 .verdict .ghost { margin-right: 6px; }
 .wa { color: #1a7f45; border-color: #b5dcc4; }
+.readtext { background: #fcfbf9; border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-size: .93rem; max-height: 320px; overflow: auto; white-space: normal; word-break: break-word; }
+.readtext mark { background: #fbd5cf; color: var(--high); border-radius: 3px; padding: 0 2px; font-weight: 600; cursor: help; }
+.shared-note { margin: 12px 0 0; background: var(--low-bg); color: var(--low); border-radius: 8px; padding: 8px 12px; font-size: .9rem; font-weight: 600; }
+.install-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.install-card p { margin: 2px 0 0; font-size: .88rem; }
+.install-card .ghost { margin-top: 0; white-space: nowrap; }

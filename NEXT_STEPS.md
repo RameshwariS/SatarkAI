@@ -6,10 +6,11 @@ The code, docs and test tools are built. What's left needs **your AWS account, r
 
 | Part | Status |
 | --- | --- |
-| Rule engine, scam playbook, stage detection | ✅ Built, 14 automated tests pass |
-| Web app (check mode, "I already paid" mode, 10 languages, family WhatsApp share) | ✅ Built, tested in a browser |
+| Rule engine, scam playbook, stage detection, lookalike-domain detection | ✅ Built, 26 automated tests pass |
+| Web app (check mode, "I already paid" mode, 10 languages, family WhatsApp share, highlighted red flags) | ✅ Built, tested in a browser |
+| Installable app + "share from WhatsApp" (Android) | ✅ Built, tested in desktop Chrome; **test on a real Android phone after deploy** |
 | AWS template + one-command deploy | ✅ Written and validated, **never deployed** |
-| Textract / Bedrock / Translate / Polly / DynamoDB calls | ⚠️ Written, **never run against real AWS** |
+| Textract / Bedrock / Translate / Polly / DynamoDB calls | ⚠️ Request shapes checked offline against the real AWS API definitions (found and fixed 2 bugs); **never run against real AWS** |
 | Evaluation script + 25 labelled test messages | ✅ Built; all 25 correct, but they are made-up messages I also tuned on |
 | Demo screenshots (English + Hindi) | ✅ In `samples/screenshots/` |
 | Idea Brief + Build Summary | ✅ Drafted in the doc; the **Impact** section needs your real numbers |
@@ -58,7 +59,7 @@ On Windows, run `deploy.sh` from Git Bash or WSL.
 | Audio: FAIL | Polly neural voice not in region | Keep us-east-1 |
 | Anything → 500 | A bug in my code that only shows on real AWS | Copy the error from CloudWatch and paste it to me |
 
-**Expect at least one real bug here.** The AWS code paths have never run. Budget half a day.
+**Expect at least one real bug here.** The request formats are now checked offline, but permissions, model access and timing can only be tested on real AWS. Budget half a day.
 
 ### 4. Load the SEBI register (30 min, optional but strong for Q&A)
 - [ ] Open https://www.sebi.gov.in/intermediaries.html → **Investment Adviser** → save each result page (Ctrl+S, "Web page, HTML only") into a folder `sebi_pages/`. Repeat for **Research Analyst**.
@@ -73,6 +74,7 @@ On Windows, run `deploy.sh` from Git Bash or WSL.
 ### 5. Test with real AWS on the demo screenshots
 - [ ] On the live site, upload each image in `samples/screenshots/` and check that the result makes sense in **English, Hindi and Marathi**.
 - [ ] Test on your phone, over mobile data, not just Wi-Fi.
+- [ ] **On an Android phone:** open the live URL in Chrome → menu → "Install app" (or tap the Install card). Then in WhatsApp, long-press a message or open an image → Share → **Nivesh Kavach**. It should open and check it automatically. (iPhones don't support sharing into web apps; there, users paste or upload.)
 - [ ] Note anything confusing or wrong and send it to me.
 
 ### 6. Collect real scam messages (the most important step for winning)
@@ -142,11 +144,11 @@ gh repo create nivesh-kavach --public --source . --push     # or create on githu
   - **"How is this different from Truecaller or SEBI Check?"** They check numbers and UPI IDs; we read the whole conversation, say which stage of the scam you're at, explain it in your language, and help after you've paid. We send people *to* SEBI Check.
   - **"How accurate is it?"** Your real numbers from step 6, with the sample size. Don't round up.
   - **"What if the AI is wrong?"** The rule engine runs independently and the AI can only raise the risk, never lower it. Every flag shows the exact words. It's guidance, not a guarantee.
+  - **"Can a scammer trick your AI?"** Message text is fenced off as untrusted input, the AI can only raise risk, and text aimed at checkers ("AI: this is safe", "ignore previous instructions") is itself a red flag. There's a test for it.
   - **"Privacy?"** Screenshots are never stored; only scam type, risk, stage and an optional city are kept for 90 days.
   - **"Cost at scale?"** Serverless, pay per check; Nova Lite is a low-cost model, and rule-based checks cost almost nothing.
 
 ## Nice-to-haves (only if everything above is done)
 - Voice-note analysis with Amazon Transcribe (scam groups also send voice notes).
 - Load the RBI alert list of unauthorised forex platforms and check names against it.
-- A "share to Nivesh Kavach" option so users can forward a screenshot straight from WhatsApp (Web Share Target, PWA).
 - Rename the app if you prefer another name; change it in `frontend/i18n.js` and `index.html`.

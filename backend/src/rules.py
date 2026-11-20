@@ -32,12 +32,18 @@ OFFICIAL_DOMAINS = {
     "nseindia.com": "NSE",
     "bseindia.com": "BSE",
     "sebi.gov.in": "SEBI",
+    # banks, payment apps and market infrastructure people use legitimately
+    "hdfcbank.com": "HDFC Bank", "icicibank.com": "ICICI Bank", "onlinesbi.sbi": "SBI", "sbi.co.in": "SBI",
+    "axisbank.com": "Axis Bank", "kotak.com": "Kotak Mahindra Bank", "pnbindia.in": "PNB", "bankofbaroda.in": "Bank of Baroda",
+    "idfcfirstbank.com": "IDFC First Bank", "indusind.com": "IndusInd Bank", "yesbank.in": "Yes Bank", "canarabank.com": "Canara Bank",
+    "paytm.com": "Paytm", "phonepe.com": "PhonePe", "pay.google.com": "Google Pay",
+    "rbi.org.in": "RBI", "npci.org.in": "NPCI", "amfiindia.com": "AMFI", "mfcentral.com": "MF Central",
+    "camsonline.com": "CAMS", "kfintech.com": "KFintech", "cdslindia.com": "CDSL", "nsdl.co.in": "NSDL",
+    "cybercrime.gov.in": "Cyber Crime Portal", "sancharsaathi.gov.in": "Sanchar Saathi", "incometax.gov.in": "Income Tax Dept",
 }
-BRAND_WORDS = {
-    "zerodha", "groww", "angel", "upstox", "icici", "hdfc", "kotak",
-    "motilal", "5paisa", "dhan", "paytm", "sharekhan", "sbi", "nse", "bse",
-    "sebi", "blackrock", "goldman", "jpmorgan", "morgan", "nomura",
-}
+# Global fund names scammers borrow ("BlackRock India VIP club"). Indian brokers are
+# covered by lookalike_brand(), which also catches spelling tricks.
+BRAND_WORDS = {"blackrock", "goldman", "goldmansachs", "jpmorgan", "morganstanley", "nomura", "vanguard", "citadel", "fidelity"}
 
 # Common consumer UPI handles (personal accounts). Payments for "investment"
 # to these go to an individual, not to a SEBI-registered intermediary.
@@ -72,6 +78,7 @@ class Flag:
     weight: int
     stage_hint: int | None = None  # which stage of stock_tips_group it suggests
     scam_hint: str | None = None
+    match: str = ""  # the exact words that triggered it (for highlighting)
 
 
 @dataclass
@@ -93,7 +100,7 @@ KEYWORD_RULES = [
     ("guaranteed_returns", "Guaranteed or 'no-risk' returns",
      "No real investment can guarantee profit. SEBI-registered advisers are not allowed to promise assured returns.",
      30, 1, None,
-     [r"guarant(?:ee|eed)", r"assured\s+returns?", r"fixed\s+returns?", r"no\s+loss", r"zero\s+risk", r"100\s?%\s+(?:profit|safe|sure)",
+     [r"guarant(?:eed|ee)", r"assured\s+returns?", r"fixed\s+returns?", r"no\s+loss", r"zero\s+risk", r"100\s?%\s+(?:profit|safe|sure)",
       r"risk[\s-]?free", r"गारंटी", r"पक्का\s+मुनाफा", r"बिना\s+रिस्क", r"हमखास", r"खात्रीशीर"]),
     ("withdrawal_fee", "Asked to pay before you can withdraw",
      "Real brokers deduct any tax or charges from your balance. Being told to pay first to 'unlock' or withdraw is the classic final stage of a fake trading app.",
@@ -150,6 +157,11 @@ KEYWORD_RULES = [
      "Returns that depend on recruiting new people is how Ponzi schemes work.",
      25, None, "ponzi_app",
      [r"referral\s+(?:income|bonus|commission)", r"level\s+income", r"team\s+income", r"refer\s+(?:\d+\s+)?friends?\s+(?:and|to)\s+earn"]),
+    ("fools_checkers", "Message tries to fool safety checks",
+     "It contains text aimed at apps or AI checkers (like 'verified safe' or 'ignore previous instructions'). Genuine messages never need this.",
+     30, None, None,
+     [r"ignore\s+(?:all\s+)?(?:previous|above|prior)\s+(?:instructions|rules)", r"(?:AI|assistant|scanner|checker|antivirus)\s*[:,]?\s*(?:this|the)\s+(?:message|link|app)\s+is\s+(?:safe|genuine|verified)",
+      r"verified\s+safe\s+by", r"system\s*(?:message|note)\s*:", r"<\s*/?\s*(?:system|untrusted_input)\s*>"]),
     ("claims_sebi", "Claims to be SEBI-registered",
      "Scammers often show a real SEBI number that belongs to someone else, or a made-up one. Check it yourself on SEBI's site.",
      5, None, None,
@@ -173,7 +185,7 @@ def _find(patterns, text):
                 continue
             start = max(0, m.start() - 40)
             end = min(len(text), m.end() + 40)
-            return text[start:end].replace("\n", " ").strip()
+            return text[start:end].replace("\n", " ").strip(), m.group(0)
     return None
 
 
@@ -181,6 +193,48 @@ def _domain(url: str) -> str:
     u = url if url.lower().startswith(("http://", "https://")) else "http://" + url
     host = (urlparse(u).hostname or "").lower()
     return host[4:] if host.startswith("www.") else host
+
+
+BRAND_NAMES = {  # official name -> how people know it
+    "zerodha": "Zerodha", "groww": "Groww", "angelone": "Angel One", "upstox": "Upstox", "icicidirect": "ICICI Direct",
+    "hdfcsec": "HDFC Securities", "kotaksecurities": "Kotak Securities", "motilaloswal": "Motilal Oswal",
+    "5paisa": "5paisa", "paytmmoney": "Paytm Money", "sharekhan": "Sharekhan", "sbisecurities": "SBI Securities",
+    "nseindia": "NSE", "bseindia": "BSE", "sebi": "SEBI", "dhan": "Dhan",
+}
+_LEET = str.maketrans({"0": "o", "1": "l", "3": "e", "4": "a", "5": "s", "7": "t", "$": "s", "@": "a"})
+
+
+def _edit_distance(a: str, b: str) -> int:
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+def lookalike_brand(host: str) -> str | None:
+    """'zer0dha-vip.in', 'upst0x.co', 'grovv.in' -> the brand being imitated."""
+    labels = host.split(".")
+    if len(labels) < 2:
+        return None
+    for part in labels[:-1]:
+        for chunk in [part] + part.split("-"):
+            norm = chunk.translate(_LEET).replace("-", "").replace("vv", "w").replace("rn", "m")
+            for key, name in BRAND_NAMES.items():
+                key_norm = key.translate(_LEET)
+                if len(norm) < 4:
+                    continue
+                if norm == key_norm:  # exact name on an unofficial domain (zer0dha.in, sebi-verify.in)
+                    return name
+                if len(key_norm) >= 6 and key_norm in norm:  # brand inside a longer word (zerodhatrade)
+                    return name
+                # small typos of long names only, never shorter words ('paisa' is not '5paisa')
+                if (len(key_norm) >= 6 and 0 <= len(norm) - len(key_norm) <= 2
+                        and _edit_distance(norm, key_norm) <= (1 if len(key_norm) < 8 else 2)):
+                    return name
+    return None
 
 
 def _is_official(host: str) -> bool:
@@ -215,9 +269,10 @@ def analyze_text(text: str) -> RuleResult:
     res = RuleResult()
     text = text or ""
     for rid, title, why, weight, stage, scam, patterns in KEYWORD_RULES:
-        ev = _find(patterns, text)
-        if ev:
-            res.flags.append(Flag(rid, title, why, ev, weight, stage, scam))
+        found = _find(patterns, text)
+        if found:
+            ev, matched = found
+            res.flags.append(Flag(rid, title, why, ev, weight, stage, scam, matched))
 
     # Unrealistic % returns
     for m in PERCENT_RETURN_RE.finditer(text):
@@ -272,17 +327,21 @@ def analyze_text(text: str) -> RuleResult:
             continue
         if _is_official(host):
             continue
-        brand = next((b for b in BRAND_WORDS if b in host.replace("-", "")), None)
+        brand = lookalike_brand(host) or next((b for b in BRAND_WORDS if b in host.replace("-", "")), None)
         if brand:
             res.flags.append(Flag(
                 "lookalike_domain", "Website pretends to be a known brand",
-                f"'{host}' contains '{brand}' but is not that company's official website. Fake trading sites copy real names.",
+                f"'{host}' looks like '{brand}' but is not the official website we know for it. Fake trading sites copy real names with small changes.",
                 url, 40, 3, "stock_tips_group"))
         else:
             res.flags.append(Flag(
                 "unknown_link", "Unknown trading/investment link",
                 f"'{host}' is not a known broker or official app store. Check that the platform is a SEBI-registered broker before depositing.",
                 url, 10, 3, None))
+
+    for f in res.flags:
+        if not f.match:
+            f.match = f.evidence
 
     # De-duplicate by id, keep first
     seen, uniq = set(), []

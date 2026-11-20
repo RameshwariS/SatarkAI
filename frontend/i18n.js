@@ -2,6 +2,8 @@
 // these are only the fixed buttons and headings. Other languages fall back to English labels.
 window.I18N = {
   en: {
+    installTitle: "Add Nivesh Kavach to your phone", installSub: "Then share any WhatsApp message or screenshot straight to it.", installBtn: "Install", sharedNote: "Got it from WhatsApp. Checking now…",
+    whatWeRead: "The message, with red flags marked",
     shareFamily: "Send to family on WhatsApp", shareIntro: "I checked a message on Nivesh Kavach:", shareAsk: "Please call me before I send any money.", sharePaid: "I may have been cheated. Please call me now, I need help reporting it.",
     brand: "Nivesh Kavach", tagline: "Check before you invest", language: "Language",
     heroTitle: "Got a \"sure-profit\" stock tip or trading app?",
@@ -26,6 +28,8 @@ window.I18N = {
     linkTitle: "Links", regTitle: "SEBI registration number", step: "Step",
   },
   hi: {
+    installTitle: "निवेश कवच को फ़ोन में जोड़ें", installSub: "फिर कोई भी WhatsApp मैसेज या स्क्रीनशॉट सीधे इसमें शेयर करें।", installBtn: "इंस्टॉल करें", sharedNote: "WhatsApp से मिल गया। जाँच रहे हैं…",
+    whatWeRead: "मैसेज, खतरे के संकेत चिह्नित",
     shareFamily: "परिवार को WhatsApp पर भेजें", shareIntro: "मैंने निवेश कवच पर एक मैसेज जाँचा:", shareAsk: "पैसे भेजने से पहले मुझे एक बार कॉल करें।", sharePaid: "शायद मेरे साथ धोखा हुआ है। कृपया अभी कॉल करें, शिकायत करने में मदद चाहिए।",
     brand: "निवेश कवच", tagline: "निवेश से पहले जाँचें", language: "भाषा",
     heroTitle: "\"पक्का मुनाफा\" वाली स्टॉक टिप या ट्रेडिंग ऐप मिली है?",
@@ -50,6 +54,8 @@ window.I18N = {
     linkTitle: "लिंक", regTitle: "SEBI रजिस्ट्रेशन नंबर", step: "चरण",
   },
   mr: {
+    installTitle: "निवेश कवच फोनमध्ये जोडा", installSub: "मग कोणताही WhatsApp मेसेज किंवा स्क्रीनशॉट थेट यात शेअर करा.", installBtn: "इंस्टॉल करा", sharedNote: "WhatsApp वरून मिळाले. तपासत आहोत…",
+    whatWeRead: "मेसेज, धोक्याची चिन्हे चिन्हांकित",
     shareFamily: "कुटुंबाला WhatsApp वर पाठवा", shareIntro: "मी निवेश कवच वर एक मेसेज तपासला:", shareAsk: "पैसे पाठवण्यापूर्वी मला एकदा कॉल करा.", sharePaid: "माझी फसवणूक झाली असावी. कृपया आत्ता कॉल करा, तक्रार करायला मदत हवी आहे.",
     brand: "निवेश कवच", tagline: "गुंतवणुकीपूर्वी तपासा", language: "भाषा",
     heroTitle: "\"हमखास नफा\" देणारी स्टॉक टिप किंवा ट्रेडिंग ॲप मिळाली आहे?",

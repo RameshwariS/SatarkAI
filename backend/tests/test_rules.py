@@ -109,3 +109,23 @@ def test_unreadable_screenshot_is_not_reported_safe():
           "body": json.dumps({"text": "please check", "images": [{"data": img, "mime": "image/png"}]})}
     r = app.handler(ev)
     assert r["statusCode"] == 422
+
+
+def test_typosquat_domains():
+    for host, brand in [("zer0dha.in", "Zerodha"), ("upst0x.co", "Upstox"), ("motilal0swal.net", "Motilal Oswal"),
+                        ("icicidirekt.com", "ICICI Direct"), ("sebi-verify.in", "SEBI")]:
+        assert rules.lookalike_brand(host) == brand, host
+    for host in ["dhanbad.com", "adhan.org", "paisa.com", "growth.in", "sebastian.com", "moneycontrol.com"]:
+        assert rules.lookalike_brand(host) is None, host
+
+
+def test_real_bank_links_not_flagged():
+    for u in ["https://www.hdfcbank.com/login", "https://www.icicibank.com", "https://onlinesbi.sbi", "https://paytm.com",
+              "https://www.amfiindia.com", "https://kite.zerodha.com"]:
+        r = rules.analyze_text("invest via " + u)
+        assert not any(f.id in ("lookalike_domain", "unknown_link") for f in r.flags), u
+
+
+def test_blackrock_club_still_flagged():
+    r = rules.analyze_text("Join at https://blackrock-elite-in.com/register")
+    assert any(f.id == "lookalike_domain" for f in r.flags)

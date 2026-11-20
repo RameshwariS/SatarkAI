@@ -1,6 +1,6 @@
 # Nivesh Kavach evaluation report
 
-Run on 2026-11-18 10:33 against local code. AI model used on 0/25 messages. Average time per check: 0.0s.
+Run on 2026-11-20 12:16 against local code. AI model used on 0/25 messages. Average time per check: 0.0s.
 
 **No real messages yet.** Add real, anonymised messages (source = news / family / volunteer) before quoting any accuracy number.
 
