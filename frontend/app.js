@@ -39,11 +39,11 @@
   }
 
   // ---------- language ----------
-  try { state.lang = localStorage.getItem("nk_lang") || "en"; } catch (_) {}
+  try { state.lang = localStorage.getItem("satark_lang") || "en"; } catch (_) {}
   $("lang").value = state.lang;
   $("lang").addEventListener("change", (e) => {
     state.lang = e.target.value;
-    try { localStorage.setItem("nk_lang", state.lang); } catch (_) {}
+    try { localStorage.setItem("satark_lang", state.lang); } catch (_) {}
     applyI18n();
   });
 
@@ -266,7 +266,7 @@
     } catch (_) { /* trends are optional */ }
   }
 
-  // ---------- installable app + "share to Nivesh Kavach" from WhatsApp ----------
+  // ---------- installable app + "share to SatarkAI" from WhatsApp ----------
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/sw.js").catch(() => {});
   }
@@ -285,7 +285,7 @@
   async function loadShared() {
     if (!new URLSearchParams(location.search).has("shared") || !("caches" in window)) return;
     try {
-      const cache = await caches.open("nk-share");
+      const cache = await caches.open("satark-share");
       const res = await cache.match("/shared-data");
       if (!res) return;
       const d = await res.json();

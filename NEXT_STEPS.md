@@ -13,7 +13,7 @@ The code, docs and test tools are built. What's left needs **your AWS account, r
 | Textract / Bedrock / Translate / Polly / DynamoDB calls | ⚠️ Request shapes checked offline against the real AWS API definitions (found and fixed 2 bugs); **never run against real AWS** |
 | Evaluation script + 25 labelled test messages | ✅ Built; all 25 correct, but they are made-up messages I also tuned on |
 | Demo screenshots (English + Hindi) | ✅ In `samples/screenshots/` |
-| Idea Brief + Build Summary | ✅ Drafted in the doc; the **Impact** section needs your real numbers |
+| Idea Brief + Build Summary | ✅ Two separate docs ("SatarkAI: Idea Brief", "SatarkAI: Build Summary"); fill the [brackets]: team details, live URL, Results table |
 | SEBI registration list | ❌ Empty: SEBI's site was blocked from my workspace (step 4) |
 | Live URL, real-user test, demo video, public repo, submission | ❌ Your steps below |
 
@@ -38,9 +38,9 @@ Install on your laptop: [AWS CLI v2](https://docs.aws.amazon.com/cli/latest/user
 
 ```bash
 aws configure                 # access key of an IAM user (not root), region us-east-1
-unzip nivesh-kavach.zip && cd nivesh-kavach
+unzip satark-ai.zip && cd satark-ai
 cd backend && python -m pytest -q && cd ..     # 14 passed
-./scripts/deploy.sh nivesh-kavach us-east-1    # prints "Live URL: https://dxxxx.cloudfront.net"
+./scripts/deploy.sh satark-ai us-east-1    # prints "Live URL: https://dxxxx.cloudfront.net"
 python scripts/smoke_test.py https://dxxxx.cloudfront.net
 ```
 **Done when** the smoke test prints `ALL GOOD`. CloudFront can take 5–10 minutes after the first deploy before the URL works.
@@ -54,7 +54,7 @@ On Windows, run `deploy.sh` from Git Bash or WSL.
 | Website loads: FAIL (403) | CloudFront still deploying, or upload missing | Wait 10 min; rerun `deploy.sh` |
 | Bedrock used: FAIL, note says `AccessDeniedException` / `ValidationException` | Model not enabled, wrong region, or Free plan limit | Step 2; keep everything in `us-east-1`; try `sam deploy --parameter-overrides BedrockModelId=us.amazon.nova-lite-v1:0` |
 | Bedrock used: FAIL, note says `ThrottlingException` | Free-plan quota is 0 | Upgrade to the Paid plan |
-| Screenshot check: FAIL | Textract error, or image too big | CloudWatch → Log groups → `/aws/lambda/nivesh-kavach-ApiFunction…` → read the error |
+| Screenshot check: FAIL | Textract error, or image too big | CloudWatch → Log groups → `/aws/lambda/satark-ai-ApiFunction…` → read the error |
 | Translate: FAIL | Translate permission or language code | Same log group |
 | Audio: FAIL | Polly neural voice not in region | Keep us-east-1 |
 | Anything → 500 | A bug in my code that only shows on real AWS | Copy the error from CloudWatch and paste it to me |
@@ -74,7 +74,7 @@ On Windows, run `deploy.sh` from Git Bash or WSL.
 ### 5. Test with real AWS on the demo screenshots
 - [ ] On the live site, upload each image in `samples/screenshots/` and check that the result makes sense in **English, Hindi and Marathi**.
 - [ ] Test on your phone, over mobile data, not just Wi-Fi.
-- [ ] **On an Android phone:** open the live URL in Chrome → menu → "Install app" (or tap the Install card). Then in WhatsApp, long-press a message or open an image → Share → **Nivesh Kavach**. It should open and check it automatically. (iPhones don't support sharing into web apps; there, users paste or upload.)
+- [ ] **On an Android phone:** open the live URL in Chrome → menu → "Install app" (or tap the Install card). Then in WhatsApp, long-press a message or open an image → Share → **SatarkAI**. It should open and check it automatically. (iPhones don't support sharing into web apps; there, users paste or upload.)
 - [ ] Note anything confusing or wrong and send it to me.
 
 ### 6. Collect real scam messages (the most important step for winning)
@@ -108,23 +108,25 @@ Simple protocol:
 ### 9. Public GitHub repo
 The zip already has a git history with one commit.
 ```bash
-cd nivesh-kavach
-gh repo create nivesh-kavach --public --source . --push     # or create on github.com and: git remote add origin <url> && git push -u origin main
+cd satark-ai
+gh repo create satark-ai --public --source . --push     # or create on github.com and: git remote add origin <url> && git push -u origin main
 ```
 - [ ] Check that **Actions → tests** runs green.
 - [ ] Make sure no AWS keys or `samconfig.toml` with secrets are committed (`.gitignore` covers the usual ones).
 
 ### 10. Finalise the docs
-- [ ] Doc: fill in **Impact** with real numbers (steps 6–7), and the live URL.
-- [ ] Doc: update "Current status" in the Build Summary.
-- [ ] Export the doc as PDF or Word for the Drive folder.
+- [ ] **Idea Brief:** fill in the Submission details table (team, Team ID, Builder Center alias, live URL, repo, video) and the **Results** table with your real numbers (steps 6–7).
+- [ ] **Build Summary:** fill in the deploy date and live URL under "Testing and status".
+- [ ] Search both docs for `[` to make sure no placeholder is left.
+- [ ] Export each doc as PDF for the Drive folder.
 
 ---
 
 ## Day 10 (by 28 Nov; keep 2 days spare): submit
 
 ### 11. Google Drive folder (shared as "Anyone with the link can view")
-- [ ] `Idea Brief + Build Summary.pdf`
+- [ ] `SatarkAI - Idea Brief.pdf`
+- [ ] `SatarkAI - Build Summary.pdf`
 - [ ] `Live URL.txt` (the CloudFront URL)
 - [ ] `Code repository.txt` (GitHub link)
 - [ ] `Demo video` (file or link)

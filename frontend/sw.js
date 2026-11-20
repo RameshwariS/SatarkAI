@@ -1,7 +1,7 @@
 // Service worker: makes the app installable, keeps the page shell available on a
 // weak connection, and receives screenshots/text shared from WhatsApp (Android).
-const SHELL = "nk-shell-v2";
-const SHARE = "nk-share";
+const SHELL = "satark-shell-v3";
+const SHARE = "satark-share";
 const FILES = ["/", "/index.html", "/styles.css", "/app.js", "/i18n.js", "/manifest.webmanifest", "/icons/icon-192.png"];
 
 self.addEventListener("install", (e) => {

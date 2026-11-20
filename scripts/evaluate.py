@@ -1,4 +1,4 @@
-"""Measure how well Nivesh Kavach works on a labelled set of messages.
+"""Measure how well SatarkAI works on a labelled set of messages.
 
   # rules only, on your laptop
   MOCK_AWS=1 python scripts/evaluate.py eval/labelled.csv
@@ -85,7 +85,7 @@ def main():
     real = [r for r in results if r["source"].strip().lower() != "synthetic"]
     synth = [r for r in results if r["source"].strip().lower() == "synthetic"]
     lines = [
-        "# Nivesh Kavach evaluation report", "",
+        "# SatarkAI evaluation report", "",
         f"Run on {time.strftime('%Y-%m-%d %H:%M')} against {'live site ' + args.url if args.url else 'local code'}. "
         f"AI model used on {sum(r['ai_used'] for r in results)}/{len(results)} messages. "
         f"Average time per check: {sum(times) / max(1, len(times)):.1f}s.", "",

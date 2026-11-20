@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Nivesh Kavach - checks investment offers, trading groups and trading apps for
+  SatarkAI - checks investment offers, trading groups and trading apps for
   scam signs and helps victims act in the first hour. Campus to Cloud Hackathon.
 
 Parameters:
@@ -93,7 +93,7 @@ Resources:
     Properties:
       DistributionConfig:
         Enabled: true
-        Comment: Nivesh Kavach
+        Comment: SatarkAI
         DefaultRootObject: index.html
         PriceClass: PriceClass_200   # includes India edge locations
         HttpVersion: http2and3

@@ -2,7 +2,7 @@
 # One-command deploy. Needs: AWS CLI v2 + AWS SAM CLI, logged in (aws configure).
 # Usage: ./scripts/deploy.sh [stack-name] [region]
 set -euo pipefail
-STACK="${1:-nivesh-kavach}"
+STACK="${1:-satark-ai}"
 REGION="${2:-us-east-1}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 

@@ -2,10 +2,10 @@
 // these are only the fixed buttons and headings. Other languages fall back to English labels.
 window.I18N = {
   en: {
-    installTitle: "Add Nivesh Kavach to your phone", installSub: "Then share any WhatsApp message or screenshot straight to it.", installBtn: "Install", sharedNote: "Got it from WhatsApp. Checking now…",
+    installTitle: "Add SatarkAI to your phone", installSub: "Then share any WhatsApp message or screenshot straight to it.", installBtn: "Install", sharedNote: "Got it from WhatsApp. Checking now…",
     whatWeRead: "The message, with red flags marked",
-    shareFamily: "Send to family on WhatsApp", shareIntro: "I checked a message on Nivesh Kavach:", shareAsk: "Please call me before I send any money.", sharePaid: "I may have been cheated. Please call me now, I need help reporting it.",
-    brand: "Nivesh Kavach", tagline: "Check before you invest", language: "Language",
+    shareFamily: "Send to family on WhatsApp", shareIntro: "I checked a message on SatarkAI:", shareAsk: "Please call me before I send any money.", sharePaid: "I may have been cheated. Please call me now, I need help reporting it.",
+    brand: "SatarkAI", tagline: "Check before you invest", language: "Language",
     heroTitle: "Got a \"sure-profit\" stock tip or trading app?",
     heroSub: "Paste the message or add screenshots from the WhatsApp/Telegram group or app. We'll tell you if it looks like a scam, what they'll do next, and what you should do now.",
     tabCheck: "Check before paying", tabPaid: "I already paid",
@@ -28,10 +28,10 @@ window.I18N = {
     linkTitle: "Links", regTitle: "SEBI registration number", step: "Step",
   },
   hi: {
-    installTitle: "निवेश कवच को फ़ोन में जोड़ें", installSub: "फिर कोई भी WhatsApp मैसेज या स्क्रीनशॉट सीधे इसमें शेयर करें।", installBtn: "इंस्टॉल करें", sharedNote: "WhatsApp से मिल गया। जाँच रहे हैं…",
+    installTitle: "सतर्क AI को फ़ोन में जोड़ें", installSub: "फिर कोई भी WhatsApp मैसेज या स्क्रीनशॉट सीधे इसमें शेयर करें।", installBtn: "इंस्टॉल करें", sharedNote: "WhatsApp से मिल गया। जाँच रहे हैं…",
     whatWeRead: "मैसेज, खतरे के संकेत चिह्नित",
-    shareFamily: "परिवार को WhatsApp पर भेजें", shareIntro: "मैंने निवेश कवच पर एक मैसेज जाँचा:", shareAsk: "पैसे भेजने से पहले मुझे एक बार कॉल करें।", sharePaid: "शायद मेरे साथ धोखा हुआ है। कृपया अभी कॉल करें, शिकायत करने में मदद चाहिए।",
-    brand: "निवेश कवच", tagline: "निवेश से पहले जाँचें", language: "भाषा",
+    shareFamily: "परिवार को WhatsApp पर भेजें", shareIntro: "मैंने सतर्क AI पर एक मैसेज जाँचा:", shareAsk: "पैसे भेजने से पहले मुझे एक बार कॉल करें।", sharePaid: "शायद मेरे साथ धोखा हुआ है। कृपया अभी कॉल करें, शिकायत करने में मदद चाहिए।",
+    brand: "सतर्क AI", tagline: "निवेश से पहले जाँचें", language: "भाषा",
     heroTitle: "\"पक्का मुनाफा\" वाली स्टॉक टिप या ट्रेडिंग ऐप मिली है?",
     heroSub: "WhatsApp/Telegram ग्रुप या ऐप का मैसेज पेस्ट करें या स्क्रीनशॉट जोड़ें। हम बताएँगे कि यह धोखा लगता है या नहीं, वे आगे क्या करेंगे, और आपको अभी क्या करना चाहिए।",
     tabCheck: "पैसे देने से पहले जाँचें", tabPaid: "मैंने पैसे दे दिए हैं",
@@ -54,10 +54,10 @@ window.I18N = {
     linkTitle: "लिंक", regTitle: "SEBI रजिस्ट्रेशन नंबर", step: "चरण",
   },
   mr: {
-    installTitle: "निवेश कवच फोनमध्ये जोडा", installSub: "मग कोणताही WhatsApp मेसेज किंवा स्क्रीनशॉट थेट यात शेअर करा.", installBtn: "इंस्टॉल करा", sharedNote: "WhatsApp वरून मिळाले. तपासत आहोत…",
+    installTitle: "सतर्क AI फोनमध्ये जोडा", installSub: "मग कोणताही WhatsApp मेसेज किंवा स्क्रीनशॉट थेट यात शेअर करा.", installBtn: "इंस्टॉल करा", sharedNote: "WhatsApp वरून मिळाले. तपासत आहोत…",
     whatWeRead: "मेसेज, धोक्याची चिन्हे चिन्हांकित",
-    shareFamily: "कुटुंबाला WhatsApp वर पाठवा", shareIntro: "मी निवेश कवच वर एक मेसेज तपासला:", shareAsk: "पैसे पाठवण्यापूर्वी मला एकदा कॉल करा.", sharePaid: "माझी फसवणूक झाली असावी. कृपया आत्ता कॉल करा, तक्रार करायला मदत हवी आहे.",
-    brand: "निवेश कवच", tagline: "गुंतवणुकीपूर्वी तपासा", language: "भाषा",
+    shareFamily: "कुटुंबाला WhatsApp वर पाठवा", shareIntro: "मी सतर्क AI वर एक मेसेज तपासला:", shareAsk: "पैसे पाठवण्यापूर्वी मला एकदा कॉल करा.", sharePaid: "माझी फसवणूक झाली असावी. कृपया आत्ता कॉल करा, तक्रार करायला मदत हवी आहे.",
+    brand: "सतर्क AI", tagline: "गुंतवणुकीपूर्वी तपासा", language: "भाषा",
     heroTitle: "\"हमखास नफा\" देणारी स्टॉक टिप किंवा ट्रेडिंग ॲप मिळाली आहे?",
     heroSub: "WhatsApp/Telegram ग्रुप किंवा ॲपचा मेसेज पेस्ट करा किंवा स्क्रीनशॉट जोडा. हे फसवणूक आहे का, ते पुढे काय करतील आणि तुम्ही आता काय करावे, हे आम्ही सांगू.",
     tabCheck: "पैसे देण्यापूर्वी तपासा", tabPaid: "मी पैसे दिले आहेत",

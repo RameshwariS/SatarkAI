@@ -24,7 +24,7 @@ class UnreadableInput(Exception):
 SUPPORTED_LANGS = {"en": "English", "hi": "हिंदी", "mr": "मराठी", "gu": "ગુજરાતી", "ta": "தமிழ்",
                    "te": "తెలుగు", "kn": "ಕನ್ನಡ", "bn": "বাংলা", "ml": "മലയാളം", "pa": "ਪੰਜਾਬੀ"}
 
-SYSTEM_PROMPT = """You are Nivesh Kavach, an assistant that helps ordinary Indians check whether an investment offer, trading group or trading app is a scam.
+SYSTEM_PROMPT = """You are SatarkAI, an assistant that helps ordinary Indians check whether an investment offer, trading group or trading app is a scam.
 You will get: text the user pasted, text read from their screenshots by OCR, the screenshots themselves (which may be in Hindi, Marathi or other Indian languages), and red flags already found by a rule engine.
 
 Known scam playbook (use these ids):
@@ -246,7 +246,7 @@ def analyze(payload: dict) -> dict:
         "complaint": complaint,
         "ai_used": model is not None,
         "notes": notes,
-        "disclaimer": "Nivesh Kavach gives guidance, not a guarantee. Always verify on sebi.gov.in and report fraud at 1930 / cybercrime.gov.in.",
+        "disclaimer": "SatarkAI gives guidance, not a guarantee. Always verify on sebi.gov.in and report fraud at 1930 / cybercrime.gov.in.",
     }
 
 
@@ -303,7 +303,7 @@ def _complaint(ents: dict, scam_id: str | None, payload: dict) -> dict:
         "I request that the above transactions be frozen and the money returned. Screenshots of chats and payments are attached.",
         "",
         "Name: [your name]   Mobile: [your number]   Address: [your address]",
-        f"Draft prepared on {now} using Nivesh Kavach. Please check every detail before submitting.",
+        f"Draft prepared on {now} using SatarkAI. Please check every detail before submitting.",
     ]
     return {
         "text": "\n".join(lines),

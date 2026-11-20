@@ -44,5 +44,5 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
-    print(f"Nivesh Kavach running at http://localhost:{port}  (mock AWS: {os.environ.get('MOCK_AWS') == '1'})")
+    print(f"SatarkAI running at http://localhost:{port}  (mock AWS: {os.environ.get('MOCK_AWS') == '1'})")
     ThreadingHTTPServer(("", port), Handler).serve_forever()

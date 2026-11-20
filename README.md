@@ -1,10 +1,10 @@
-# Nivesh Kavach (निवेश कवच)
+# SatarkAI (सतर्क AI)
 
 **Check an investment offer before you pay. Get first-hour help if you already did.**
 
 In 2025, 77% of the money Indians lost to cyber fraud went to fake investment schemes (I4C / National Cyber Crime Reporting Portal data). These scams run inside WhatsApp/Telegram "stock-tips" groups and fake trading apps, where caller-ID and spam filters can't see them.
 
-Nivesh Kavach lets anyone paste a message or upload screenshots. It tells them in their own language:
+SatarkAI lets anyone paste a message or upload screenshots. It tells them in their own language:
 - whether it looks like a scam, with the exact words that are red flags,
 - **which stage of the scam they are at and what the scammer will do next**,
 - whether the payment UPI ID is a SEBI-validated `@valid` ID, and whether a SEBI registration number checks out,
@@ -86,7 +86,7 @@ Prerequisites: AWS account (Free plan), [AWS CLI v2](https://docs.aws.amazon.com
 2. **Test Bedrock:** in the Bedrock console (region `us-east-1`), open the playground and send a message to **Amazon Nova Lite**. If you get a quota or access error on the Free plan, upgrade the account to the Paid plan (your credits still apply) and try again.
 3. **Deploy:**
    ```bash
-   ./scripts/deploy.sh nivesh-kavach us-east-1
+   ./scripts/deploy.sh satark-ai us-east-1
    ```
    It prints the **Live URL**. Open `<Live URL>/api/health` to confirm.
 4. (Optional) **Load the SEBI register:** save the Investment Adviser, Research Analyst and Stock Broker result pages from https://www.sebi.gov.in/intermediaries.html into a folder, then run `python scripts/build_registry.py <folder>` and deploy again.
