@@ -1,0 +1,8 @@
+# Runtime dependency for AWS service integrations.
+boto3
+
+# Test dependency.
+pytest
+
+# Optional: required only for scripts/make_demo_screenshots.py.
+# playwright
